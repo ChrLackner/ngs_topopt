@@ -36,8 +36,11 @@ r = 0.1
 # S = exp(-100*((x-0.1)*(x-0.1) + y*y))
 S = exp(-100*((x-0.1)*(x-0.1) + y*y)) - 0.5 * exp(-100 *((x-1.2)*(x-1.2) + (y-0.3)*(y-0.3))) - \
     0.5 * exp(-100 *((x-1.2)*(x-1.2) + (y+0.3)*(y+0.3)))
-av = Integrage(S,mesh)
-S = S - av
+av = Integrate(S,mesh)
+dom_size = Integrate(CoefficientFunction(1),mesh)
+print("av = ", av)
+S = S - av/dom_size
+print("av = ", Integrate(S,mesh))
 bf_integrand = lambda _p,_v,_u: { "form" : (_u*_u + r) *grad(_p) * grad(_v)}
 lf_integrand = lambda _v, _u: { "form" : S * _v }
 
